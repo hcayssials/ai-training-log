@@ -1,1 +1,1 @@
-"""A Garmin training log that Claude keeps for you. See README.md."""
+"""A Garmin training log your AI assistant keeps for you. See README.md."""
