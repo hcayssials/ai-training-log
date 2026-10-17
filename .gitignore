@@ -1,0 +1,11 @@
+# Never commit runs, logins or local state.
+.runlog/
+Training log.csv
+*.csv
+garmin/
+*tokens*
+__pycache__/
+*.pyc
+.DS_Store
+*.tmp
+.pytest_cache/

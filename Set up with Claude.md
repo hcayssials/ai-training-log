@@ -1,0 +1,115 @@
+# Set up with Claude
+
+**For you:** put this file in an empty folder where you want your training log (for
+example `My Drive/Running`). Open that folder in the Claude desktop app's **Code** tab
+(Mac or Windows) and say:
+
+> Set up my training log using "Set up with Claude.md".
+
+It takes about 5 minutes. You'll need your Garmin Connect email and password.
+
+---
+
+## Instructions for Claude
+
+You are setting up the `runlog` tool so this folder holds the user's **training log**:
+one CSV with a row per run from Garmin Connect, which you'll then keep up to date and
+describe. Talk in plain language; assume they've never used a terminal. Summarise
+command output rather than pasting it.
+
+**This folder** (the one with this file) is the log folder. The tool's code goes in
+`~/claude-training-log`, never here.
+
+### Rules
+
+1. **Never handle the Garmin password.** The user types it into a terminal (Step 3).
+   If they paste it in the chat anyway, don't repeat or use it, and suggest they change
+   it on connect.garmin.com.
+2. **Read-only.** The tool never changes anything on their Garmin account. Don't try to.
+3. Ask before editing any file outside this folder and `~/claude-training-log`.
+
+### Step 1: Check the computer
+
+Mac: `python3 --version && git --version`. If either is missing, run
+`xcode-select --install` (they click **Install**; wait, then check again).
+
+Windows (commands run in Git Bash, so git is there): `py --version || python --version`.
+If neither works, or `python` opens the Microsoft Store, they need Python: let you run
+`winget install -e --id Python.Python.3.12`, or download it from python.org and tick
+**"Add python.exe to PATH"**. Below, `PY` is whichever worked (`python3` on a Mac).
+
+### Step 2: Get the tool
+
+```bash
+git -C ~/claude-training-log pull --ff-only 2>/dev/null || git clone https://github.com/hcayssials/claude-training-log.git ~/claude-training-log
+```
+
+Tell them first: *"I'm about to run the installer. Claude may ask you to approve it,
+because it runs code that was just downloaded."* Then:
+
+```bash
+PY ~/claude-training-log/install.py
+```
+
+It ends by printing **the exact command for this computer** (also saved in
+`~/.config/runlog/command.txt`). From here on, `runlog` means that command.
+
+### Step 3: Set up the folder, then sign in to Garmin (they type, you don't see it)
+
+Ask: **kilometres or miles?** and **how far back to start** (default 90 days). Then:
+
+```bash
+runlog init --units km --days 90
+```
+
+Open a terminal tab for them in this folder, running the login. Use the app's
+run-in-terminal tool if you have one; otherwise they open Terminal (Mac) or PowerShell
+(Windows) and paste it:
+
+- Mac / Linux, or Git Bash on Windows: `~/.local/bin/runlog login`
+- Windows PowerShell: `& "$env:USERPROFILE\.local\bin\runlog.cmd" login`
+
+Tell them: *"Enter your Garmin email, then your password. Nothing appears as you type
+it, that's normal. If Garmin sends you a code, enter that too."* A wrong password just
+asks again. Wait until they say it's signed in.
+
+### Step 4: First sync
+
+```bash
+runlog sync
+runlog weeks --weeks 4
+```
+
+Tell them how many runs landed and show the last 4 weeks in a small table.
+
+### Step 5: Their first descriptions
+
+```bash
+runlog pending --limit 3
+```
+
+Write descriptions for the 3 newest runs, following the training-log skill (installed in
+Step 2): one or two sentences, only what the numbers and laps show. Show them, ask what
+to change (length, tone, units, emoji or none), and save their preferences to
+`.runlog/style.md`. Then save the three with `runlog describe <id> "…"`. Offer to do
+the rest of the backlog the same way.
+
+If a **Laps** value looks wrong next to its lap table (fast float recoveries confuse
+it), propose the right notation and, if they agree, `runlog laps <id> "…"`.
+
+### Step 6: Tell them what they have
+
+- `Training log.csv` in this folder (opens in Excel, Numbers or Google Sheets). The
+  "My notes" column is theirs: the tool never overwrites it.
+- From now on, in Claude Code, they can say: **"update my training log"**,
+  **"how was my week?"**, **"what were my last three workouts?"**,
+  **"how's my mileage trending?"**
+
+### If something goes wrong
+
+| Symptom | Fix |
+|---|---|
+| `command not found: runlog` | Use the command in `~/.config/runlog/command.txt` |
+| `Can't read Garmin … runlog login` | Their session expired: Step 3's login again |
+| `too many sign-in attempts` | Garmin's limit: wait 15 minutes |
+| A run is missing | It isn't a run on Garmin (e.g. logged as "cardio"): `runlog init --all-activities`, then `runlog sync --days 30` |
