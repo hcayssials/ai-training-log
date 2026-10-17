@@ -35,8 +35,13 @@ def pip_install(req):
 
 
 def main():
-    if sys.version_info < (3, 9):
-        sys.exit(f"Python 3.9 or newer is needed; this is {sys.version.split()[0]}.")
+    if sys.version_info < (3, 12):
+        # Not our choice: the Garmin library (garminconnect) requires 3.12+.
+        sys.exit(f"This needs Python 3.12 or newer (the Garmin library requires it); this "
+                 f"is {sys.version.split()[0]}.\n"
+                 f"  Mac: install it from https://www.python.org/downloads/ , then run\n"
+                 f"       python3.12 install.py   (or python3.13 …)\n"
+                 f"  Windows: winget install -e --id Python.Python.3.12 , then py -3.12 install.py")
 
     print("1/3  Python package: garminconnect")
     try:

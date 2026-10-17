@@ -18,6 +18,9 @@ Date        Distance  Time     Pace  Laps            Description
 
 ## Setup (5 minutes, Mac or Windows)
 
+Needs **Python 3.12+** (the Garmin library requires it; Macs ship with 3.9, so you may
+need [python.org](https://www.python.org/downloads/) first) and git.
+
 Easiest: put [`Set up with Claude.md`](Set%20up%20with%20Claude.md) in an empty folder,
 open that folder in the Claude desktop app's **Code** tab, and say *"Set up my training
 log using Set up with Claude.md"*.
@@ -26,7 +29,7 @@ Or by hand:
 
 ```bash
 git clone https://github.com/hcayssials/claude-training-log.git ~/claude-training-log
-python3 ~/claude-training-log/install.py        # Windows: py ~/claude-training-log/install.py
+python3.12 ~/claude-training-log/install.py     # Windows: py -3.12 ~/claude-training-log/install.py
 cd "<your log folder>"
 runlog init --units km                           # or --units mi
 runlog login                                     # Garmin email + password, once
@@ -75,4 +78,4 @@ notes, cached laps). Kilometres or miles, your choice.
 python -m pytest -q tests     # an end-to-end test against a fake Garmin
 ```
 
-CI runs it on Windows, Mac and Linux with Python 3.9 and 3.13.
+CI runs it on Windows, Mac and Linux with Python 3.12 and 3.13.

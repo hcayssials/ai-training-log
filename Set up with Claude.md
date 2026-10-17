@@ -30,13 +30,32 @@ command output rather than pasting it.
 
 ### Step 1: Check the computer
 
-Mac: `python3 --version && git --version`. If either is missing, run
-`xcode-select --install` (they click **Install**; wait, then check again).
+It needs **Python 3.12 or newer** (the Garmin library requires it) and git. Macs ship
+with an older Python (3.9), so many people need to install a newer one. That's normal.
 
-Windows (commands run in Git Bash, so git is there): `py --version || python --version`.
-If neither works, or `python` opens the Microsoft Store, they need Python: let you run
-`winget install -e --id Python.Python.3.12`, or download it from python.org and tick
-**"Add python.exe to PATH"**. Below, `PY` is whichever worked (`python3` on a Mac).
+**Mac:** `git --version` (if missing, run `xcode-select --install`; they click
+**Install**, then wait). Then look for a new enough Python:
+
+```bash
+for p in python3.13 python3.12 python3; do $p -c 'import sys; assert sys.version_info >= (3,12)' 2>/dev/null && { echo $p; break; }; done
+```
+
+If that prints nothing, ask them to install Python from
+https://www.python.org/downloads/ (the big yellow button, then open the downloaded
+installer and click through). Wait for them, then run the check again.
+
+**Windows** (commands run in Git Bash, so git is there):
+
+```bash
+py -3.13 --version || py -3.12 --version
+```
+
+If neither works (or `python` opens the Microsoft Store), they need Python 3.12+: let
+you run `winget install -e --id Python.Python.3.12`, or download it from python.org and
+tick **"Add python.exe to PATH"**. Then check again.
+
+Below, `PY` is the command that worked: `python3.13`, `python3.12` or `python3` on a
+Mac; `py -3.13` or `py -3.12` on Windows.
 
 ### Step 2: Get the tool
 
