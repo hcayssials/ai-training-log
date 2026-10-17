@@ -12,5 +12,5 @@ For agents changing the code. Agents *using* the tool follow
 - Sync must never overwrite `Description`, `My notes`, or a corrected lap notation
   (`.runlog/laps_overrides.json`).
 - Windows: text files as UTF-8 (the CSV as `utf-8-sig` so Excel reads it), no
-  `%-d`-style strftime, no nested same-quote f-strings (Python 3.9 is supported).
+  `%-d`-style strftime. Python 3.12+ (garminconnect requires it).
 - `python -m pytest -q tests` must pass; CI runs it on Windows, Mac and Linux.
