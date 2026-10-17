@@ -1,16 +1,20 @@
-# Set up with Claude
+# Set up Garmin training log with AI
 
 **For you:** put this file in an empty folder where you want your training log (for
-example `My Drive/Running`). Open that folder in the Claude desktop app's **Code** tab
-(Mac or Windows) and say:
+example `My Drive/Running`). Open that folder in an **AI coding assistant**, one that can
+run commands on your computer, and say:
 
-> Set up my training log using "Set up with Claude.md".
+> Set up my training log using "Set up Garmin training log with AI.md".
+
+Any of these work, on Mac or Windows: the Claude desktop app's **Code** tab (or Claude
+Code), ChatGPT's **Codex**, **Cursor**, **GitHub Copilot** in agent mode, or **Gemini CLI**.
+A plain chat window (chatgpt.com, claude.ai) can't: it has no access to your computer.
 
 It takes about 5 minutes. You'll need your Garmin Connect email and password.
 
 ---
 
-## Instructions for Claude
+## Instructions for the AI assistant
 
 You are setting up the `runlog` tool so this folder holds the user's **training log**:
 one CSV with a row per run from Garmin Connect, which you'll then keep up to date and
@@ -18,7 +22,7 @@ describe. Talk in plain language; assume they've never used a terminal. Summaris
 command output rather than pasting it.
 
 **This folder** (the one with this file) is the log folder. The tool's code goes in
-`~/claude-training-log`, never here.
+`~/ai-training-log`, never here.
 
 ### Rules
 
@@ -26,7 +30,7 @@ command output rather than pasting it.
    If they paste it in the chat anyway, don't repeat or use it, and suggest they change
    it on connect.garmin.com.
 2. **Read-only.** The tool never changes anything on their Garmin account. Don't try to.
-3. Ask before editing any file outside this folder and `~/claude-training-log`.
+3. Ask before editing any file outside this folder and `~/ai-training-log`.
 
 ### Step 1: Check the computer
 
@@ -60,14 +64,14 @@ Mac; `py -3.13` or `py -3.12` on Windows.
 ### Step 2: Get the tool
 
 ```bash
-git -C ~/claude-training-log pull --ff-only 2>/dev/null || git clone https://github.com/hcayssials/claude-training-log.git ~/claude-training-log
+git -C ~/ai-training-log pull --ff-only 2>/dev/null || git clone https://github.com/hcayssials/ai-training-log.git ~/ai-training-log
 ```
 
-Tell them first: *"I'm about to run the installer. Claude may ask you to approve it,
-because it runs code that was just downloaded."* Then:
+Tell them first: *"I'm about to run the installer. Your AI app may ask you to approve
+it, because it runs code that was just downloaded."* Then:
 
 ```bash
-PY ~/claude-training-log/install.py
+PY ~/ai-training-log/install.py
 ```
 
 It ends by printing **the exact command for this computer** (also saved in
@@ -107,8 +111,8 @@ Tell them how many runs landed and show the last 4 weeks in a small table.
 runlog pending --limit 3
 ```
 
-Write descriptions for the 3 newest runs, following the training-log skill (installed in
-Step 2): one or two sentences, only what the numbers and laps show. Show them, ask what
+Write descriptions for the 3 newest runs, following the usage instructions the installer
+wrote (`~/.config/runlog/AGENTS.md`; read them now if you haven't): one or two sentences, only what the numbers and laps show. Show them, ask what
 to change (length, tone, units, emoji or none), and save their preferences to
 `.runlog/style.md`. Then save the three with `runlog describe <id> "…"`. Offer to do
 the rest of the backlog the same way.
@@ -120,9 +124,15 @@ it), propose the right notation and, if they agree, `runlog laps <id> "…"`.
 
 - `Training log.csv` in this folder (opens in Excel, Numbers or Google Sheets). The
   "My notes" column is theirs: the tool never overwrites it.
-- From now on, in Claude Code, they can say: **"update my training log"**,
+- From now on, in their AI assistant, they can say: **"update my training log"**,
   **"how was my week?"**, **"what were my last three workouts?"**,
   **"how's my mileage trending?"**
+
+So their assistant knows how next time:
+- **Claude Code / Claude app:** nothing to do. The installer added a skill it finds by itself.
+- **Any other assistant:** ask, then copy `~/.config/runlog/AGENTS.md` into this folder as
+  `AGENTS.md` (Codex, Cursor and Copilot read that file; for Gemini CLI name it
+  `GEMINI.md`). It's the only extra file the folder gets.
 
 ### If something goes wrong
 
