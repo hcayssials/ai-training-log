@@ -74,4 +74,4 @@ runlog show 2026-10-17        # one run (by date or id), lap by lap
 
 ## Setting it up
 
-If there's no `.runlog/` yet, follow `{{REPO}}/Set up with Claude.md`.
+If there's no `.runlog/` yet, follow `{{REPO}}/Set up Garmin training log with AI.md`.

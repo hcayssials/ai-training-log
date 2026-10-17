@@ -3,8 +3,8 @@
     Mac / Linux:   python3 install.py
     Windows:       py install.py                 (or: python install.py)
 
-It installs one Python package (garminconnect), a `runlog` command and the Claude
-skill, then prints the exact command to run the tool with on this computer.
+It installs one Python package (garminconnect), a `runlog` command, the Claude skill
+and the same instructions as AGENTS.md for other AI assistants, then prints the exact command to run the tool with on this computer.
 """
 
 import os
@@ -79,6 +79,11 @@ def main():
     os.makedirs(USER_DIR, exist_ok=True)
     with open(os.path.join(USER_DIR, "command.txt"), "w", encoding="utf-8") as fh:
         fh.write(cmd + "\n")
+    # The same instructions for assistants other than Claude (Codex, Cursor, Copilot
+    # read AGENTS.md; Gemini CLI reads GEMINI.md): the skill without its header.
+    body = text.split("---", 2)[2].lstrip() if text.startswith("---") else text
+    with open(os.path.join(USER_DIR, "AGENTS.md"), "w", encoding="utf-8") as fh:
+        fh.write(body)
     print("\nDone. The command for this computer (also saved in ~/.config/runlog/command.txt):")
     print(f"  {'runlog' if on_path else cmd}")
     print("Next, in the folder you want your log in:  runlog init")

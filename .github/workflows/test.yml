@@ -27,6 +27,7 @@ jobs:
         run: |
           "$HOME/.local/bin/runlog" --help | head -3
           eval "$(cat "$HOME/.config/runlog/command.txt") --help" | head -1
+          test -s "$HOME/.config/runlog/AGENTS.md" && ! head -1 "$HOME/.config/runlog/AGENTS.md" | grep -q -- "---"
 
       - name: The command works from cmd
         if: runner.os == 'Windows'
